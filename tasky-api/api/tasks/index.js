@@ -39,31 +39,27 @@ router.post('/', (req, res) => {
     tasksData.total_results++;
 });
 
-
-//Update an existing task
+// Update an existing task
 router.put('/:id', (req, res) => {
     const { id } = req.params;
 
-    // Find the task index by ID
     const taskIndex = tasksData.tasks.findIndex(task => task.id === id);
     if (taskIndex === -1) {
         return res.status(404).json({ status: 404, message: 'Task not found' });
     }
 
-    // Update the task by merging new data
+    const currentTimestamp = new Date().toISOString();
     const updatedTask = Object.assign(
         {},
         tasksData.tasks[taskIndex],
         req.body,
-        { id, updated_at: new Date().toISOString() }
+        { id: id, updated_at: currentTimestamp }
     );
 
-    // Save the updated task back into the array
-    tasksData.tasks[taskIndex] = updatedTask;
-
-    // Respond with the updated task
-    res.json(updatedTask);
+    tasksData.tasks[taskIndex] = updatedTask; // Save updated task
+    res.status(200).json(updatedTask);
 });
+
 
 // Delete a task
 router.delete('/:id', (req, res) => {
