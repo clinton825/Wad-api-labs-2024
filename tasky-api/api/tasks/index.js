@@ -1,6 +1,6 @@
 import express from 'express';
 import Task from './taskModel';
-
+import asyncHandler from 'express-async-handler';
 const router = express.Router();
 
 // Get all tasks
@@ -14,19 +14,11 @@ router.get('/', async (req, res) => {
 });
 
 // Create a new task
-router.post('/', async (req, res) => {
-    try {
-        const task = await new Task(req.body).save();
-        res.status(201).json({
-            code: 201,
-            message: 'Task created successfully',
-            data: task, // Include the created task in the response
-        });
-    } catch (error) {
-        res.status(400).json({ code: 400, message: 'Error creating task', error: error.message });
-    }
-});
-
+router.post('/', asyncHandler(async (req, res) => {
+    const task = await Task(req.body).save();
+    res.status(201).json(task);
+}));
+   
 // Update Task
 router.put('/:id', async (req, res) => {
     if (req.body._id) delete req.body._id;
@@ -39,6 +31,7 @@ router.put('/:id', async (req, res) => {
         res.status(404).json({ code: 404, msg: 'Unable to find Task' });
     }
 });
+
 
 // delete Task
 router.delete('/:id', async (req, res) => {
