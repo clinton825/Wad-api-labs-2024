@@ -4,13 +4,10 @@ import asyncHandler from 'express-async-handler';
 const router = express.Router();
 
 // Get all tasks
+// Get all tasks
 router.get('/', async (req, res) => {
-    try {
-        const tasks = await Task.find();
-        res.status(200).json(tasks);
-    } catch (error) {
-        res.status(500).json({ code: 500, message: 'Error fetching tasks', error: error.message });
-    }
+    const tasks = await Task.find().populate('userId', 'username');
+    res.status(200).json(tasks);
 });
 
 // Create a new task
