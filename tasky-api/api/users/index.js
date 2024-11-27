@@ -1,6 +1,6 @@
 import express from 'express';
 import User from './userModel';
-
+import asyncHandler from 'express-async-handler';
 const router = express.Router(); // eslint-disable-line
 
 // Get all users
@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
 });
 
 // Register(Create)/Authenticate User
-router.post('/', async (req, res) => {
+router.post('/', asyncHandler(async (req, res) => {
     try {
         if (req.query.action === 'register') {
             // Save new user to database
@@ -32,9 +32,10 @@ router.post('/', async (req, res) => {
             res.status(200).json({ code: 200, msg: 'Authentication Successful', token: 'TEMPORARY_TOKEN' });
         }
     } catch (error) {
-        res.status(500).json({ code: 500, msg: 'Internal Server Error', error: error.message });
+        res.status(500).json({ code: 400, msg: 'Internal Server Error', error: error.message });
     }
-});
+}));
+
 
 // Update a user
 router.put('/:id', async (req, res) => {
