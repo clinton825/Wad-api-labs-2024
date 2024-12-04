@@ -4,7 +4,8 @@
   "main": "index.js",
   "scripts": {
     "start": "babel-node index.js",
-"dev": "babel-node ./initialise-dev/initDevDB.js && nodemon --exec npm start"  },
+    "dev": "babel-node ./initialise-dev/initDevDB.js && nodemon --exec npm start"
+  },
   "author": "clinton bempah",
   "license": "ISC",
   "description": "",
@@ -20,6 +21,7 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.1",
     "express-async-handler": "^1.2.0",
-    "mongoose": "^8.8.3"
+    "mongoose": "^8.8.3",
+    "node-fetch": "^2.7.0"
   }
 }
